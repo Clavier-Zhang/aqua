@@ -12,8 +12,8 @@ messages = get_messages('./messages.txt')
 
 TARGET_STREAMING = "https://www.youtube.com/watch?v=WinQpGPnSdI"
 
-BROWSER_VERSION = 'src/drivers/chromedriver_mac_86'
-
+# BROWSER_VERSION = 'src/drivers/chromedriver_mac_86'
+BROWSER_VERSION = 'src/drivers/chromedriver.exe'
 
 count = 0
 lock = threading.Lock()

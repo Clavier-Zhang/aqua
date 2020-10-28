@@ -21,9 +21,10 @@ class Driver:
 
     def __init__(self, browser_version, display_window, target, name="unknown"):
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('window-size=1920x1080')          
-        chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
-        if not display_window:
+        chrome_options.add_argument('window-size=1920x1080')
+        # chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+        chrome_options.add_argument("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+        if display_window:
             chrome_options.headless = True
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("-—disable-gpu")
@@ -51,17 +52,21 @@ class Driver:
         
         self.driver.get('https://stackoverflow.com/users/login?ssrc=head&returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f7537905%2fhow-to-set-password-for-redis')
         # wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '/html/body/header/div/ol[2]/li[2]/a[1]'))
+        logging.info('visit stackoverflow success')
         wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '//*[@id="openid-buttons"]/button[1]'))
         logging.info("{0}: Enter {1}".format(self.username, self.driver.title))
-
         # login
-        wait_appear_and_send_keys(self.driver, 'Email-Input', (By.XPATH, "//input[@id='identifierId']"), username)                     # type email
+        try:
+            wait_appear_and_send_keys(self.driver, 'Email-Input', (By.XPATH, "//input[@id='identifierId']"), username)                     # type email
+        except:
+            wait_appear_and_click(self.driver, 'Another-Account', (By.XPATH, '//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div/div/ul/li[2]'))
+            wait_appear_and_send_keys(self.driver, 'Email-Input', (By.XPATH, "//input[@id='identifierId']"), username)                     # type email
         wait_appear_and_click(self.driver, "Next-Button (username page)", (By.ID, 'identifierNext'))                                   # click next
         wait_appear_and_send_keys(self.driver, 'Password-Input', (By.CSS_SELECTOR, 'div#password input[name="password"]'), password)   # type password
         wait_appear_and_click(self.driver, "Next-Button (password page)", (By.ID, 'passwordNext'))                                     # click next
         wait_appear(self.driver, 'Stackoverflow Home page', (By.ID, 'content'))                                                        # go to stackoverflow homepage
-
         # set ytb info, first time login setup
+
         self.driver.get('https://www.youtube.com/create_channel')
         try:
             wait_appear_and_click(self.driver, "Create-Channel", (By.XPATH, '//*[@id="create-channel-identity-dialog"]/form/div[2]/div/button[2]'))                                     # click next
