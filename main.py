@@ -1,6 +1,7 @@
 import time
 import logging
 from src.driver import *
+from src.utils import *
 import threading
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
@@ -21,13 +22,15 @@ class Thread(threading.Thread):
         threading.Thread.__init__(self, target=t, args=args)
         self.start()
 
-def task(driver):
+def task(driver, account):
+    driver.login(username=account[0], password=account[1])
     for _ in range(5):
         delay(5)
-        driver.send_message(random_choose(messages))
+        # driver.send_message(random_choose(messages))
 
 
 drivers = []
+threads = []
 for i in range(len(accounts)):
     account = accounts[i]
     driver = Driver(browser_version=BROWSER_VERSION, 
@@ -35,11 +38,13 @@ for i in range(len(accounts)):
                     target=TARGET_STREAMING,
                     name=str(i))
     driver.login(username=account[0], password=account[1])
-    drivers.append(driver)
-    delay(60)               # avoid ip ban
+    threads.append(Thread(task, driver, account))
 
-# threads = []
+    delay(2)               # avoid ip ban
+
+
 # for driver in drivers:
 #     threads.append(Thread(task, driver))
 
 
+# print(get_proxy())

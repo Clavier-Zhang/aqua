@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as expect
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.proxy import Proxy, ProxyType
 import time
 from random import randint
 import logging
@@ -26,6 +27,17 @@ class Driver:
             chrome_options.headless = True
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("-—disable-gpu")
+        # chrome_options.add_argument('--proxy-server={0}'.format(get_proxy()))
+
+        # prox = Proxy()
+        # prox.proxy_type = ProxyType.MANUAL
+        # prox.http_proxy = get_proxy()
+        # prox.https_proxy = get_proxy()
+        # # prox.socks_proxy = get_proxy()
+        # # prox.ssl_proxy = get_proxy()
+        # capabilities = webdriver.DesiredCapabilities.CHROME
+        # prox.add_to_capabilities(capabilities)
+
         self.driver = webdriver.Chrome(executable_path=browser_version, options=chrome_options)
         self.target = target
         self.name = name
@@ -37,8 +49,8 @@ class Driver:
         # go to stackoverflow
         logging.info('{0}: Login google account using Stackoverflow google login page'.format(self.username))                          # avoid security check
         
-        self.driver.get('https://stackoverflow.com')
-        wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '/html/body/header/div/ol[2]/li[2]/a[1]'))
+        self.driver.get('https://stackoverflow.com/users/login?ssrc=head&returnurl=https%3a%2f%2fstackoverflow.com%2fquestions%2f7537905%2fhow-to-set-password-for-redis')
+        # wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '/html/body/header/div/ol[2]/li[2]/a[1]'))
         wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '//*[@id="openid-buttons"]/button[1]'))
         logging.info("{0}: Enter {1}".format(self.username, self.driver.title))
 

@@ -6,12 +6,17 @@ from selenium.webdriver.common.keys import Keys
 import time
 from random import randint
 import logging
+import requests
 from src.utils import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+TIME_OUT = 20
 
 def random_choose(arr):
     return arr[randint(0, len(arr) - 1)]
+
+def get_proxy():
+    return requests.get("http://127.0.0.1:5010/get/").json()['proxy']
 
 def get_accounts(path):
     accounts = []
@@ -41,10 +46,10 @@ def delay(n):
 
 def wait_appear_and_click(driver, name, selector):
     # logging.info('Looking for <{0}>'.format(name))
-    WebDriverWait(driver, 10).until(                     
+    WebDriverWait(driver, TIME_OUT).until(                     
         expect.presence_of_element_located(selector) ,  # wait for element to appear
     )
-    WebDriverWait(driver, 10).until(                     
+    WebDriverWait(driver, TIME_OUT).until(                     
         expect.element_to_be_clickable(selector)        # wait for element clickable
     )
     driver.find_element(*selector).click()              # click element
@@ -52,13 +57,13 @@ def wait_appear_and_click(driver, name, selector):
 
 def wait_appear_and_send_keys(driver, name, selector, keys):
     # logging.info('Looking for <{0}>'.format(name))
-    WebDriverWait(driver, 10).until(                    # wait for element to appear
+    WebDriverWait(driver, TIME_OUT).until(                    # wait for element to appear
         expect.presence_of_element_located(selector) ,
     )
-    WebDriverWait(driver, 10).until(                    # wait for element to appear
+    WebDriverWait(driver, TIME_OUT).until(                    # wait for element to appear
         expect.visibility_of_element_located(selector),
     )
-    WebDriverWait(driver, 10).until(                    # wait for element to appear
+    WebDriverWait(driver, TIME_OUT).until(                    # wait for element to appear
         expect.element_to_be_clickable(selector)        # wait for element clickable
     )
     driver.find_element(*selector).send_keys(keys)      # send msg
@@ -66,7 +71,7 @@ def wait_appear_and_send_keys(driver, name, selector, keys):
 
 def wait_appear(driver, name, selector):
     # logging.info('Looking for <{0}>'.format(name))
-    WebDriverWait(driver, 10).until(                    # wait for element to appear
+    WebDriverWait(driver, TIME_OUT).until(                    # wait for element to appear
         expect.presence_of_element_located(selector) 
     )
     # logging.info('Found <{0}>'.format(name))
@@ -75,7 +80,7 @@ def wait_appear(driver, name, selector):
 # enter chatframe
 def wait_and_enter_frame(driver, name, selector):
     # logging.info('Looking for iframe:<{0}>'.format(name))
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, TIME_OUT).until(
         expect.presence_of_element_located(selector),       # wait charframe to appear
     )
     iframe = driver.find_element(*selector)                 # locate chatframe, cannot use id to select frame
