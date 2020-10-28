@@ -18,7 +18,7 @@ class Driver:
 
     username = None
 
-    def __init__(self, browser_version, display_window, target):
+    def __init__(self, browser_version, display_window, target, name="unknown"):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('window-size=1920x1080')          
         chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
@@ -28,13 +28,14 @@ class Driver:
             chrome_options.add_argument("-—disable-gpu")
         self.driver = webdriver.Chrome(executable_path=browser_version, options=chrome_options)
         self.target = target
+        self.name = name
         
     def login(self, username, password):
 
         self.username = username
 
         # go to stackoverflow
-        logging.info('{0}: Login google account using Stackoverflow google login page'.format(self.username)) # avoid security check
+        logging.info('{0}: Login google account using Stackoverflow google login page'.format(self.username))                          # avoid security check
         
         self.driver.get('https://stackoverflow.com')
         wait_appear_and_click(self.driver, "Google-Login-Button (stackoverflow)", (By.XPATH, '/html/body/header/div/ol[2]/li[2]/a[1]'))
@@ -66,6 +67,7 @@ class Driver:
 
 
     def send_message(self, message):
+        message = "Thread{0}: {1}".format(self.name, message)
         wait_appear_and_send_keys(self.driver, 'Message-Input', (By.ID, 'input'), message)                     # type message
         wait_appear_and_click(self.driver, "Send-Button (streaming)", (By.XPATH, '//*[@id="send-button"]'))    # click send
         logging.info("{0}: Send message <{1}>".format(self.username, message))

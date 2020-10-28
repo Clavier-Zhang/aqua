@@ -10,6 +10,9 @@ from src.utils import *
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
+def random_choose(arr):
+    return arr[randint(0, len(arr) - 1)]
+
 def get_accounts(path):
     accounts = []
     f = open(path, 'r')
@@ -22,8 +25,19 @@ def get_accounts(path):
         accounts.append((data[0], data[1]))
     return accounts
 
+def get_messages(path):
+    messages = []
+    f = open(path, 'r')
+    lines = f.readlines()
+    for line in lines:
+        line = line.strip()
+        if len(line) == 0:
+            continue
+        messages.append(line)
+    return messages
+
 def delay(n):
-    time.sleep(randint(2, n))
+    time.sleep(n + randint(1, 3))
 
 def wait_appear_and_click(driver, name, selector):
     # logging.info('Looking for <{0}>'.format(name))
@@ -65,5 +79,5 @@ def wait_and_enter_frame(driver, name, selector):
         expect.presence_of_element_located(selector),       # wait charframe to appear
     )
     iframe = driver.find_element(*selector)                 # locate chatframe, cannot use id to select frame
-    driver.switch_to.frame(iframe)                                                    # enter chatframe
+    driver.switch_to.frame(iframe)                          # enter chatframe
     # logging.info('Enter iframe:<{0}>'.format(name))
