@@ -46,8 +46,9 @@ def delay(n):
 
 def create_browser(browser_version, display_window):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('window-size=1920x1080')          
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+    # chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
     if not display_window:
         chrome_options.headless = True
         chrome_options.add_argument("--no-sandbox")

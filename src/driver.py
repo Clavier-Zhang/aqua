@@ -46,7 +46,13 @@ class Driver(threading.Thread):
     def login(self):
 
         self.manager.set_account_status(self.account, 'status', 'login')
-
+        self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+            Object.defineProperty(navigator, 'webdriver', {
+              get: () => undefined
+            })
+        """
+        })
         # go to youtube homepage
         self.driver.get('https://www.youtube.com/')
         logging.debug("{0}: Enter {1}".format(self.account[0], self.driver.title))

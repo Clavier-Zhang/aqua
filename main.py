@@ -12,13 +12,14 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s', datefm
 accounts = get_accounts('./accounts.txt')
 messages = get_messages('./messages.txt')
 
-TARGET_STREAMING = "https://www.youtube.com/watch?v=WinQpGPnSdI"
-BROWSER_VERSION = 'src/drivers/chromedriver_mac_86'
-
+# TARGET_STREAMING = "https://www.youtube.com/watch?v=WinQpGPnSdI"
+TARGET_STREAMING = "https://www.youtube.com/watch?v=MWEINPVWv2I"
+# BROWSER_VERSION = 'src/drivers/chromedriver_mac_86'
+BROWSER_VERSION = 'src/drivers/chromedriver.exe'
 
 
 manager = Manager(accounts=get_accounts('./accounts.txt'),
                   messages=get_messages('./messages.txt'),
                   target=TARGET_STREAMING,
-                  display_window=False,
+                  display_window=True,
                   browser_version=BROWSER_VERSION)
